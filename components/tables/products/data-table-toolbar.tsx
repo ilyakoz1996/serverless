@@ -1,0 +1,79 @@
+"use client";
+
+import { Cross2Icon } from "@radix-ui/react-icons";
+import { Table } from "@tanstack/react-table";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { DataTableViewOptions } from "./data-table-view-options";
+
+import { priceTypes } from "./data/data";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { IProduct } from "@/core/types";
+import { ComponentType } from "react";
+
+interface DataTableToolbarProps<TData> {
+  table: Table<TData>;
+}
+
+export function DataTableToolbar<TData>({
+  table,
+}: DataTableToolbarProps<TData>) {
+
+  const isFiltered = table.getState().columnFilters.length > 0;
+
+  let categories: {label: string, value: string, icon?: ComponentType<{
+    className?: string | undefined;
+}> | undefined;}[] = []
+  
+  table.getCoreRowModel().rows.forEach((r) => {
+    const product = r.original as IProduct
+    product.categories?.map((cat) => {
+    var i = categories.findIndex(x => x.value === cat);
+    if (i <= -1) {
+        categories.push({label: cat, value: cat, icon: undefined});
+      }
+    });
+  })
+
+
+  return (
+    <div className="flex items-center justify-between">
+      <div className="flex flex-1 items-center space-x-2">
+        <Input
+          placeholder="Filter by title..."
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("title")?.setFilterValue(event.target.value)
+          }
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
+        {table.getColumn("categories") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("categories")}
+            title="Categories"
+            options={categories}
+          />
+        )}
+        {table.getColumn("price") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("price")}
+            title="Price type"
+            options={priceTypes}
+          />
+        )}
+        {isFiltered && (
+          <Button
+            variant="ghost"
+            onClick={() => table.resetColumnFilters()}
+            className="h-8 px-2 lg:px-3"
+          >
+            Reset
+            <Cross2Icon className="ml-2 h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <DataTableViewOptions table={table} />
+    </div>
+  );
+}

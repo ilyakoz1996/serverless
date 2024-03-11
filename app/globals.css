@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .hd-screen {
+    height: 100dvh;
+  }
+  .min-hd-screen {
+    min-height: 100dvh;
+  }
+}
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+ 
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+ 
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+ 
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+ 
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142, 69%, 58%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+ 
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+ 
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+ 
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+ 
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+ 
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+ 
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+ 
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142, 69%, 58%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.required:after {
+  content:" *";
+  color: #EF4444;
+}
+.optional {
+  position: relative;
+}
+.optional:after {
+  content:" ?";
+  font-size: xx-small;
+  position: absolute;
+  top: -2px;
+  margin-left: 4px;
+  align-items: start ;
+  color: #737373;
+}
+
+
+.foundation_cpu__ciXpm {
+  -webkit-user-select: none;
+  user-select: none;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 21px 25px;
+  border-radius: 8px;
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #fff;
+  position: relative;
+  background: linear-gradient(180deg,#999 0,#eaeaea 100%),linear-gradient(180deg,hsla(0,0%,100%,.1) 0,hsla(0,0%,100%,.1) 26.56%,rgba(0,0,0,.1) 51.56%,rgba(0,0,0,.1) 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 6px 4px -2px rgba(0,0,0,.15), inset 0 -3px 1px -1px rgba(0,0,0,.25);
+}
+
+.foundation_cpu__ciXpm [data-connectors] {
+--connector-width: 6px;
+--connector-height: 10px;
+position: absolute;
+display: flex;
+}
+
+.stack {
+--stack-flex: initial;
+--stack-direction: column;
+--stack-align: center;
+--stack-justify: center;
+--stack-padding: 0px;
+--stack-gap: 0px;
+}
+
+.foundation_cpu__ciXpm [data-connectors][data-side=right] {
+flex-direction: column;
+right: calc(var(--connector-height) * -1);
+}
+
+.foundation_cpu__ciXpm [data-connectors][data-side=bottom] {
+bottom: calc(var(--connector-height) * -1);
+}
+
+.foundation_cpu__ciXpm [data-connectors][data-side=top] {
+top: calc(var(--connector-height) * -1);
+}
+
+.foundation_cpu__ciXpm [data-connectors][data-side=left] {
+flex-direction: column;
+left: calc(var(--connector-height) * -1);
+}
+
+.foundation_cpu__ciXpm [data-connectors][data-side=left] [data-connector] {
+background: linear-gradient(180deg,#787878,#6b6b6b 33.33%,#8b8b8b 66.67%,#303030);
+}
+
+.foundation_cpu__ciXpm [data-connectors][data-side=top] [data-connector] {
+background: linear-gradient(180deg,#9a9a9a,#686868 33.33%,#848484 66.67%,#3a3a3a);
+}
+
+.foundation_cpu__ciXpm [data-connectors][data-side=bottom] [data-connector] {
+background: linear-gradient(180deg,#898989,#6f6f6f 33.33%,#a3a3a3 66.67%,#535353);
+}
+
+.foundation_cpu__ciXpm [data-connectors][data-side=right] [data-connector] {
+background: linear-gradient(1turn,#6f6f6f,#878787 33.33%,#8b8b8b 66.67%,#4d4d4d);
+}
+
+
+/* NPROGRESS */
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: rgb(74 222 128);
+
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px rgb(74 222 128), 0 0 5px rgb(74 222 128);
+  opacity: 1.0;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 26px;
+  right: 26px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+
+  border: solid 2px transparent;
+  border-top-color: rgb(74 222 128);
+  border-left-color: rgb(74 222 128);
+  border-radius: 50%;
+
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+          animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

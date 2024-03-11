@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id       String    @id @default(uuid()) @db.VarChar(36)
+  title    String?   @db.VarChar(256)
+  img      String?   @default("https://www.pngkey.com/png/detail/950-9501315_katie-notopoulos-katienotopoulos-i-write-about-tech-user.png")
+  email    String    @unique
+  projects Project[]
+  sessions Session[]
+}
+
+model Session {
+  id      String   @id @default(uuid()) @db.VarChar(36)
+  userId  String
+  accessToken String
+  refreshToken  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Project {
+  id                  String              @id @default(uuid()) @db.VarChar(36)
+  slug                String              @unique @db.VarChar(256)
+  title               String              @db.VarChar(256)
+  img                 String?             @default("https://static.vecteezy.com/system/resources/previews/000/554/511/original/shopping-cart-vector-icon.jpg")
+  about               String?             @db.VarChar(256)
+  websiteUrl          String?             @db.VarChar(256)
+  balance             Decimal?            @default(0.00)
+  products            Product[]
+  paymentLinks        PaymentLink[]
+  wallet              Wallet?  
+  withdrawalAddresses WithdrawalAddress[]
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String              @db.VarChar(36)
+
+  @@index([userId])
+}
+
+model Wallet {
+  id          String       @id @default(uuid()) @db.VarChar(36)
+  projectId   String       @db.VarChar(36) @unique
+  project     Project?     @relation(fields: [projectId], references: [id])
+  btc         String?
+  ltc         String?
+  tron        String?
+  evm         String?
+}
+
+model WithdrawalAddress {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  network   String
+  address   String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String   @db.VarChar(36)
+
+  @@index([projectId])
+}
+
+model Product {
+  id           String        @id @default(uuid()) @db.VarChar(36)
+  title        String        @db.VarChar(36)
+  img          String?       @default("https://icon-library.com/images/icon-product/icon-product-5.jpg")
+  about        String?       @db.VarChar(256)
+  categories   Json?
+  fields       Json?
+  priceType    String        @default("fixed")
+  price        Decimal?      @default(0.00)
+  minPrice     Decimal?      @default(0.00)
+  maxPrice     Decimal?      @default(0.00)
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId    String        @db.VarChar(36)
+  paymentLinks PaymentLink[]
+
+  @@index([projectId])
+}
+
+model PaymentLink {
+  id                  String    @id @default(uuid()) @db.VarChar(36)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  projectId           String    @db.VarChar(36)
+  project             Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  expiredAt           DateTime?
+  fields              Json?
+  amount              Int?      @default(1)
+  price               Decimal?
+  product             Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId           String?   @db.VarChar(36)
+  invoiceId           String?   @unique
+  url                 String?
+
+  @@index([productId])
+  @@index([projectId])
+}
