@@ -1,6 +1,6 @@
-export const SERVER_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/api` : 'http://localhost:6753'
-export const ROOT_DOMAIN = process.env.VERCEL_URL ? process.env.VERCEL_URL : 'localhost:3000'
-export const CLIENT_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+export const SERVER_URL = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api` : 'http://localhost:6753'
+export const ROOT_DOMAIN = process.env.NEXT_PUBLIC_VERCEL_URL ? process.env.NEXT_PUBLIC_VERCEL_URL : 'localhost:3000'
+export const CLIENT_URL = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : 'http://localhost:3000'
 export const PRICES_SERVER = "https://rates.simplepay.ai"
 export const PROCESSING_SERVER = "https://processing.simplepay.ai"
 export const AUTH_CLIENT_URL = "https://s-auth.org"
