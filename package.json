@@ -1,10 +1,10 @@
 {
-  "name": "crypto-processing-client",
-  "version": "0.1.0",
+  "name": "simplepay-serverless",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 0.0.0.0",
-    "build": "next build",
+    "dev": "prisma generate && next dev",
+    "build": "prisma generate && prisma db push && prisma db seed && next build",
     "start": "next start",
     "lint": "next lint"
   },
