@@ -8,9 +8,10 @@ const updateLinks = async () => {
   const url = `${AUTH_SERVER_URL}/updateApp?clientId=${CLIENT_ID}&websiteUrl=${CLIENT_URL}&callbackUrl=${SERVER_URL}/api/auth?callback=true`;
   console.log("url: ", url);
   try {
-      const response = fetch(url, {
+      const response = await fetch(url, {
         method: 'GET'
-      });
+      })
+      console.log('response: ',response.json())
       return response;
   } catch (err) {
     console.log(err)
