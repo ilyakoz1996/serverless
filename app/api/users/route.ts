@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
     const searchParams = new URLSearchParams(url.search);
     const userId = searchParams.get('userId')
     const email = searchParams.get('email')
+    const code = searchParams.get('code')
     if (userId) {
         const user = await usersService.getUserById(userId as string);
         return NextResponse.json(user)
