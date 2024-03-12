@@ -3,7 +3,7 @@ import TokensService from '../_services/_tokens';
 import WalletsService from '../_services/_wallets';
 import { IToken, IWallet } from '@/core/types';
 import { NextRequest, NextResponse } from 'next/server';
-import { PROCESSING_SERVER } from '@/core/constants';
+import { CLIENT_ID, PROCESSING_SERVER } from '@/core/constants';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     };
 
     const invoiceResponse = await axios.post(`${PROCESSING_SERVER}/invoice`, {
-      merchantId: process.env.CLIENT_ID,
+      merchantId: CLIENT_ID,
       projectId: body.projectId,
       productId: body.productId ? body.productId : undefined,
       tokenId: token.id,
