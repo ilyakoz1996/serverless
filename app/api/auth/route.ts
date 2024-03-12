@@ -1,4 +1,4 @@
-import { AUTH_CLIENT_URL, AUTH_SERVER_URL, CLIENT_ID, CLIENT_SECRET, CLIENT_URL } from '@/core/constants';
+import { AUTH_CLIENT_URL, AUTH_SERVER_URL, CLIENT_ID, CLIENT_SECRET, CLIENT_URL, SERVER_URL } from '@/core/constants';
 import axios from 'axios';
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -15,14 +15,14 @@ export async function GET(req: NextRequest) {
     const code = searchParams.get('code')
     try {
         if (login) {
-            const url = `${AUTH_SERVER_URL}/auth/auth?client_id=${CLIENT_ID}&redirect_uri=${CLIENT_URL}/auth?callback=true&scope=openid email`;
+            const url = `${AUTH_SERVER_URL}/auth/auth?client_id=${CLIENT_ID}&redirect_uri=${SERVER_URL}/auth?callback=true&scope=openid email`;
             return NextResponse.redirect(new URL(url))
         } else if (callback && code) {
             try {
                 const response = await axios.post(`${process.env.TOKEN_ENDPOINT}`, {
                   grant_type: 'authorization_code',
                   code: code,
-                  redirect_uri: `${CLIENT_URL}/auth?callback=true`,
+                  redirect_uri: `${SERVER_URL}/auth?callback=true`,
                   client_id: CLIENT_ID,
                   client_secret: CLIENT_SECRET,
                 });
