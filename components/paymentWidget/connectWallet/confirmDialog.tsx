@@ -46,13 +46,13 @@ function ConfirmContent ({setShowConfirm, phone} : {setShowConfirm: React.Dispat
             setLoading(false)
             setStep('payment')
             const invoiceId = invoice.invoiceId
-            await api.paymentLinks.updatePaymentLink({
+            const updatedPaymentLink = await api.paymentLinks.updatePaymentLink({
                 id: paymentLink.data.id,
                 invoiceId: invoiceId,
                 price: Number(getPrice().toFixed(2))
             })
             setPaymentLink((prev: any) => {
-                return {...prev, data: {...prev.data, invoiceId: invoiceId}}
+                return {...prev, data: {...prev.data, invoiceId: updatedPaymentLink.invoiceId}}
             })
         }
     }
