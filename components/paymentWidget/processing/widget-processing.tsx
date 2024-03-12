@@ -82,7 +82,7 @@ export default function WidgetProcessingPage() {
             d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>}
-        <p className="font-bold text-xl">{invoice?.status === 'success' ? "Invoice succsessfuly paid" : "Payment is processing" }</p>
+        <p className="font-bold text-xl">{isComplete(transaction) ? "Invoice succsessfuly paid" : "Payment is processing" }</p>
       </div>
         <p className="text-sm text-neutral-500">
         {invoice?.status === 'succsess' ? "The payment is completed." : "Your payment is processing. Please wait for a while"}
