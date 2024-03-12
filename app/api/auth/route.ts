@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
                 const { access_token } = response.data;
                 const redirectURL = new URL(`${AUTH_CLIENT_URL}/grantAccess/success`);
                 redirectURL.searchParams.append('code', access_token);
+                redirectURL.searchParams.append('url', CLIENT_URL);
                 return NextResponse.redirect(new URL(redirectURL))
 
               } catch (error) {
