@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState(localUser ? JSON.parse(localUser) : null);
 
   const login = (): void => {
-    const oauthServerUrl = `https://${ROOT_DOMAIN}/api/users/login`;
+    const oauthServerUrl = `https://${ROOT_DOMAIN}/api/auth?login=true`;
     const width = 400, height = 420;
     const left = (window.innerWidth - width) / 2;
     const top = (window.innerHeight - height) / 2;
