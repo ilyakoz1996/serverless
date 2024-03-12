@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
       productId: body.productId ? body.productId : undefined,
       tokenId: token.id,
       tokenAmount: tokenAmount,
+      tokenPrice: token.price,
       from: body.from,
       to: getMerchantAddress(token, merchantWallet),
       clientEmail: body.clientEmail.trim(),

@@ -32,6 +32,15 @@ export default function WidgetPaymentPage() {
     }
   }, [paymentLink.data?.invoiceId])
 
+  const handleIssued = (data: any) => {
+    console.log('EVENT DATA!', data)
+    if (data.invoiceId === paymentLink.data.invoiceId) {
+      setPaymentLink((prev: any) => {
+        return {...prev, data: {...prev.data, invoiceId: data.invoiceId}}
+      })
+      setInvoice(data)
+    }
+  }
   const handleProcessing = (data: any) => {
     console.log('EVENT DATA!', data)
     if (data.invoiceId === paymentLink.data.invoiceId) {
@@ -44,6 +53,7 @@ export default function WidgetPaymentPage() {
   }
 
   useEffect(() => {
+    db3.on('InvoiceIssued', handleIssued)
     db3.on('InvoiceProcessing', handleProcessing)
   }, [])
 
