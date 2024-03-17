@@ -1,7 +1,7 @@
 const updateLinks = async () => {
 
-  const SERVER_URL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
-  const CLIENT_URL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  const SERVER_URL = process.env.NEXT_PUBLIC_DOMAIN ? `${process.env.NEXT_PUBLIC_DOMAIN}/api` : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+  const CLIENT_URL = process.env.NEXT_PUBLIC_DOMAIN ? process.env.NEXT_PUBLIC_DOMAIN : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
   const AUTH_SERVER_URL = "https://api.s-auth.org";
 
