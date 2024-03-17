@@ -1,4 +1,4 @@
-This is self-hosted [Simple Pay](https://simplepay.ai) project for [`Vercel`](https://vercel.com/) serverless hosting.
+This is self-hosted [Simple Pay](https://simplepay.ai) project ready for [`Vercel`](https://vercel.com/) hosting and Vercel Cloud Functions.
 
 ## Custom domain setup
 
@@ -16,6 +16,6 @@ Value: https://your-new-domain.com
 
 After you added NEXT_PUBLIC_DOMAIN env, go to project's deployments tab and redeploy your project.
 
-## Project's rest API:
+## REST API:
 
-Check out your REST API documentation on "https://your-domain.com/api/docs"
+Check out your REST API documentation on https://your-domain.com/api/docs
