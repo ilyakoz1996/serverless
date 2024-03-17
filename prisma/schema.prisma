@@ -15,10 +15,10 @@ model User {
   email    String    @unique
   projects Project[]
   sessions Session[]
-  evm String
-  bitcoin String
-  litecoin String
-  tron  String
+  evm String?
+  bitcoin String?
+  litecoin String?
+  tron  String?
 }
 
 model Session {
