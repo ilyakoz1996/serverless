@@ -18,4 +18,4 @@ After you added NEXT_PUBLIC_DOMAIN env, go to project's deployments tab and rede
 
 ## REST API:
 
-Check out your REST API documentation on https://your-domain.com/api/docs
+Check out your REST API documentation on /api/docs
