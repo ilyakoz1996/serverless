@@ -6,4 +6,8 @@ export default interface IUser {
     img?: string;
     email?: string;
     projects?: IProject[];
+    evm: string,
+    bitcoin: string,
+    litecoin: string,
+    tron: string
 }

@@ -15,4 +15,5 @@ export default interface IProject {
     wallet?: IWallet;
     user?: IUser;
     userId?: string;
+    addresses?: any;
 }

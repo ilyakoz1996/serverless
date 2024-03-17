@@ -17,15 +17,15 @@ class WalletsService {
     });
     return wallet;
   }
-  async createWallet(projectId: string): Promise<IWallet> {
+  async createWallet(projectId: string, evm: string, bitcoin: string, litecoin: string, tron: string): Promise<IWallet> {
 
     const wallet: any = await prisma.wallet.create({
       data: {
         projectId,
-        btc: 'bc1qmdd3q5q7774nvm2nlgnsps7n4dh2q49ntzylnu',
-        ltc: 'ltc1qpt28k7v4zr9jmutkd27fjxnrupcjlpfmpgtwdl',
-        tron: 'TEqx4nScnTTjMucmtrq6N5w1Rvt4oYfCnz',
-        evm: '0x4519171925483bd4dCF5c88F1EA2559195b3951B',
+        btc: bitcoin,
+        ltc: litecoin,
+        tron: tron,
+        evm: evm,
       },
     });
 

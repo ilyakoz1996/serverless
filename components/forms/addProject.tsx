@@ -78,7 +78,7 @@ export default function CreateStore({setShowNewTeamDialog}:{setShowNewTeamDialog
   const onSubmit = async (data: any) => {
     nprogress.start()
     toast('Creating new Store...')
-    const projectUpdated = await mutateAsync({...data, userId: storage.users.getUser()?.id});
+    const projectUpdated = await mutateAsync({...data, userId: storage.users.getUser()?.id, addresses: {evm: storage.users.getUser()?.evm, bitcoin: storage.users.getUser()?.bitcoin, litecoin: storage.users.getUser()?.litecoin, tron: storage.users.getUser()?.tron}});
     nprogress.done()
     storage.projects.updateProject(projectUpdated)
     toast('New Store created!')

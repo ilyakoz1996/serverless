@@ -124,7 +124,7 @@ class ProjectsService {
     });
     return project;
   }
-  async createProject(userId: string, slug: string, title: string, img?: string, about?: string, websiteUrl?: string): Promise<IProject> {
+  async createProject(userId: string, slug: string, title: string, addresses: any,  img?: string, about?: string, websiteUrl?: string): Promise<IProject> {
 
     const project: any = await prisma.project.create({ data: {
       userId,
@@ -143,7 +143,7 @@ class ProjectsService {
       products: true,
       paymentLinks: true,
     } });
-    const wallet = await walletsService.createWallet(project.id);
+    const wallet = await walletsService.createWallet(project.id, addresses.evm, addresses.bitcoin, addresses.litecoin, addresses.tron);
     return {...project, wallet: wallet};
   }
   async updateProject(

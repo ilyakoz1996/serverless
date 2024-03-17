@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
   const body = await req.json()
-  const project = await projectsService.createProject(body.userId, body.slug, body.title, body.img, body.about, body.websiteUrl);
+  const project = await projectsService.createProject(body.userId, body.slug, body.title, body.addresses, body.img, body.about, body.websiteUrl);
   return NextResponse.json(project);
 }
 export async function PUT(req: NextRequest) {
