@@ -65,15 +65,15 @@ export default function WidgetPaymentPage() {
     <div className="flex flex-col w-full px-4 py-3 h-full">
       <div className="relative flex flex-col justify-between h-full pt-2 pb-2 lg:pt-4 lg:pb-4">
         <div className="w-full h-full lg:h-64 flex items-center justify-center my-2 lg:my-4">
-            <div className="relative flex items-center justify-center bg-zinc-900 rounded-xl p-4">
+            <div className="relative flex items-center justify-center bg-black rounded-xl p-4">
 
               {invoice === null ? <Skeleton className="w-44 h-44 lg:w-56 lg:h-56" /> :
               <div className="relative">
              {invoice !== null && invoice.to && <QRCode
                 size={256}
                 value={invoice.to}
-                fgColor="rgb(74 222 128)"
-                bgColor="rgb(24 24 27)"
+                fgColor="rgb(0 0 0)"
+                bgColor="RGBA(255, 255, 255)"
                 viewBox={`0 0 256 256`}
                 className="h-32 w-32 lg:w-56 lg:h-56"
                 />}

@@ -7,7 +7,9 @@ export default function ProductItem({ productId }: { productId?: string }) {
 
     const {data: product, isLoading} = useGetProduct(productId!);
 
-    if (isLoading && !product) {
+    console.log('search product', productId)
+
+    if (isLoading) {
         return (
             <div className="flex space-x-2 items-center">
             <Skeleton className="w-8 h-8 rounded" />
@@ -19,24 +21,39 @@ export default function ProductItem({ productId }: { productId?: string }) {
             </div>
           </div>
         )
-    } else if (!isLoading && product) {
+    } else if (!isLoading) {
         return (
-          <Link href={`/products?id=${product.id}`}>
+          <>
+          {product ? <Link href={`/products?id=${product.id}`}>
             <div className="flex space-x-4 items-center">
               <img src={product.img} className="w-8 h-8 rounded object-cover" />
               <div className="flex flex-col">
                 <div className="flex items-center">
-                  <span className="max-w-[260px] truncate font-medium">
+                  <span className="max-w-[260px] text-sm truncate font-bold">
                     {product.title}
                   </span>
                 </div>
-                <span className="max-w-[400px] text-xs line-clamp-1 mt-1 text-neutral-500">
+                <span className="max-w-[400px] text-xs line-clamp-1 text-neutral-500">
                   {product.about}
                 </span>
               </div>
             </div>
-          </Link>
+          </Link> 
+          :       
+          <div className="flex space-x-4 items-center">
+      <p className="text-2xl w-8 h-8 text-center">⚡️</p>
+      <div className="flex flex-col">
+        <div className="flex items-center">
+          <span className="max-w-[260px] text-sm truncate font-bold">
+            Quick invoice
+          </span>
+        </div>
+        <span className="max-w-[400px] text-xs line-clamp-1 text-neutral-500">
+          No description
+        </span>
+      </div>
+    </div>}
+          </>
         );
     }
-
-}
+  }

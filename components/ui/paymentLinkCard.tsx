@@ -33,7 +33,7 @@ export default function PaymentLinkCard ({paymentLink}: {paymentLink: IPaymentLi
             <div className="relative flex items-center justify-center bg-zinc-900 rounded-xl p-4">
               <QRCode
                 size={256}
-                value={`https://${ROOT_DOMAIN}/pay?invoice=${paymentLink.id}`}
+                value={`${CLIENT_URL}/pay?invoice=${paymentLink.id}`}
                 fgColor="rgb(74 222 128)"
                 bgColor="rgb(24 24 27)"
                 viewBox={`0 0 256 256`}

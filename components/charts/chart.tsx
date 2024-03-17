@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line } from 'recharts';
 
 
-export default function Chart ({invoices, filterBy }: {invoices: IPaymentLink[], filterBy: string}) {
+export default function Chart ({invoices, filterBy }: {invoices: any[], filterBy: string}) {
 
   const [filteredChartInvoices, setFilteredChartInvoices] = useState<any []>([])
 
@@ -54,6 +54,7 @@ export default function Chart ({invoices, filterBy }: {invoices: IPaymentLink[],
           itemStyle={{display: "none"}} 
           label={{display: 'none'}}
           content={({ active, payload, label }) => {
+            console.log('payload', payload)
             const invoices = payload?.length ? payload[0].value : 0.00
             const sales = payload?.length ? payload[1].value : 0.00
             const rejected = payload?.length ? payload[2].value : 0.00

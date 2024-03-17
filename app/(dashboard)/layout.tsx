@@ -69,7 +69,7 @@ export default function LandingPageLayout({
           <main className="flex flex-col pt-36 pb-24 hd-screen w-full px-4 lg:px-32 xl:px-44 2xl:px-80">
             {children}
           </main>
-          <Toaster />
+          <Toaster theme="dark" />
         </>
       )}
       {user?.email && path === "/create-project" && (

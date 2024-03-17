@@ -3,7 +3,7 @@ import { IPaymentLink } from "@/core/types";
 export default function FilterTodayInvoices (invoices: IPaymentLink[]) {
   
   // Функция для преобразования строки даты в объект Date
-  const parseCreatedAt = (createdAtString: string): Date => new Date(createdAtString);
+  const parseCreatedAt = (createdAtString: number): Date => new Date(createdAtString);
   
   // Функция для получения ключа часа из объекта Date
   const getHourKey = (date: Date): string => {
@@ -22,7 +22,7 @@ export default function FilterTodayInvoices (invoices: IPaymentLink[]) {
   
   // Функция для проверки, был ли инвойс создан сегодня
   const isInToday = (invoice: IPaymentLink): boolean => {
-      const invoiceDate: Date = parseCreatedAt(invoice.createdAt!);
+      const invoiceDate: Date = parseCreatedAt(Number(invoice.createdAt) * 1000);
       return invoiceDate >= startOfDay && invoiceDate <= endOfDay;
   };
   
@@ -31,7 +31,7 @@ export default function FilterTodayInvoices (invoices: IPaymentLink[]) {
   
   // Группируем инвойсы по часам за последние 24 часа
   const groupedInvoices: any = invoicesInLast24Hours.reduce((groups: any, invoice) => {
-      const createdAtDate = parseCreatedAt(invoice.createdAt!);
+      const createdAtDate = parseCreatedAt(Number(invoice.createdAt!) * 1000);
       const hourKey = getHourKey(createdAtDate);
       if (!groups[hourKey]) {
           groups[hourKey] = [];
@@ -51,7 +51,7 @@ export default function FilterTodayInvoices (invoices: IPaymentLink[]) {
               return {
                   name: hour,
                   invoices: groupedInvoices[hour].length,
-                  sales:  groupedInvoices[hour].filter((i: IPaymentLink) => i.invoiceId).length,
+                  sales:  groupedInvoices[hour].filter((i: any) => i.status === 'success').length,
                   rejected: 0
               }
           } else {

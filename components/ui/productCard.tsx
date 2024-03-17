@@ -51,7 +51,7 @@ export default function ProductCard ({product}: {product: IProduct}) {
             <div className="relative flex items-center justify-center bg-zinc-900 rounded-xl p-4">
               <QRCode
                 size={256}
-                value={`https://${ROOT_DOMAIN}/pay?invoice=${product.id}`}
+                value={`${CLIENT_URL}/pay?id=${product.id}`}
                 fgColor="rgb(74 222 128)"
                 bgColor="rgb(24 24 27)"
                 viewBox={`0 0 256 256`}
@@ -88,7 +88,7 @@ export default function ProductCard ({product}: {product: IProduct}) {
                 <p className="text-neutral-500 text-sm">https://</p>
               </div>
               <p className="text-sm font-bold text-neutral-500 pl-1">
-                pay.{CLIENT_URL}/
+                {CLIENT_URL}/pay/product/id?
               </p>
               <p className="font-bold text-sm pl-1 w-22 truncate">
                 {product.id}

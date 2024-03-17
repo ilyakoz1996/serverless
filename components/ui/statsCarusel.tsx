@@ -13,12 +13,16 @@ export default function StatsCarusel ({invoices} : {invoices: IPaymentLink[]}) {
     })
 
 
-    const getStats = (invoices: IPaymentLink[]) => {
+    const getStats = (invoices: any[]) => {
         const today: Date = new Date();
         const todayStart: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
         const todayEnd: Date = new Date(todayStart.getTime() + (24 * 60 * 60 * 1000));
 
-        const completedInvoices = invoices.filter((invoice) => invoice.invoiceId)
+        const completedInvoices = invoices.sort((a: any, b: any) => {
+            const adate = new Date(Number(a.updatedAt) * 1000)
+            const bdate = new Date(Number(b.updatedAt) * 1000)
+            return Number(bdate) - Number(adate)
+          }).filter((invoice) => invoice.status === 'success')
 
         let totalRev = 0.00
         let todayRev = 0.00
@@ -27,10 +31,10 @@ export default function StatsCarusel ({invoices} : {invoices: IPaymentLink[]}) {
 
         if (completedInvoices.length > 0) {
             completedInvoices.map((invoice) => {
-                const createdAt: Date = new Date(invoice.createdAt!);
-                totalRev += Number(invoice.price!)
+                const createdAt: Date = new Date(invoice.createdAt! * 1000);
+                totalRev += (Number(invoice.tokenAmount!) * Number(invoice.tokenPrice))
                 if (createdAt >= todayStart && createdAt < todayEnd) {
-                    todayRev += Number(invoice.price!)
+                    todayRev += (Number(invoice.tokenAmount!) * Number(invoice.tokenPrice))
                 }
             })
         }
@@ -41,7 +45,7 @@ export default function StatsCarusel ({invoices} : {invoices: IPaymentLink[]}) {
     let endDate: Date | undefined;
 
     for (const invoice of invoices) {
-        const createdAt: Date = new Date(invoice.createdAt!);
+        const createdAt: Date = new Date(invoice.createdAt! * 1000);
         if (!startDate || createdAt < startDate) {
             startDate = createdAt;
         }
@@ -63,7 +67,7 @@ export default function StatsCarusel ({invoices} : {invoices: IPaymentLink[]}) {
     }
 
     for (const invoice of invoices) {
-        const createdAt: Date = new Date(invoice.createdAt!);
+        const createdAt: Date = new Date(invoice.createdAt! * 1000);
         const createdAtString: string = createdAt.toISOString().split('T')[0];
         invoiceCountsPerDay.set(createdAtString, (invoiceCountsPerDay.get(createdAtString) || 0) + 1);
     }
@@ -76,7 +80,10 @@ export default function StatsCarusel ({invoices} : {invoices: IPaymentLink[]}) {
 
     daylyInvoices = totalInvoiceCount / totalDays;
 
-    succsessRate = invoices.length / completedInvoices.length
+    console.log('Инвойсов всего: ', invoices.length)
+    console.log('Оплачены: ', completedInvoices.length)
+
+    succsessRate = completedInvoices.length / invoices.length * 100
 
         return setStats({
             totalRev: Number(totalRev).toFixed(2),

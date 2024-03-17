@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { IPaymentLink, IProduct } from "@/core/types";
 import {
+  ExternalLink,
   FileCheck,
   LinkIcon,
   Receipt,
@@ -120,7 +121,7 @@ function PaymentLink({
     );
   };
 
-  const invoiceDomain = `https://${ROOT_DOMAIN}/pay`
+  const invoiceDomain = `${CLIENT_URL}/pay`
 
   const createPaymentLink = async (data: IPaymentLink) => {
     setLoading(true);
@@ -171,12 +172,12 @@ function PaymentLink({
       {!project ||
         (loding && (
           <div className="h-64">
-            <Loader little title="Creating payment link..." />
+            <Loader little title="Creating Payment link..." />
           </div>
         ))}
       {project && !loding && view === "type" && (
-        <div className="grid gap-4 py-4">
-          <div className="my-4 flex w-full justify-center">
+        <div className="flex flex-col">
+          <div className="flex w-full justify-center my-12">
             <Receipt className="w-12 h-12 text-neutral-500" strokeWidth={0.5} />
           </div>
           <Button
@@ -201,9 +202,9 @@ function PaymentLink({
               />
             </svg>
 
-            <p>Quick paymentLink</p>
+            <p>Quick Payment Link</p>
           </Button>
-          <div className="flex space-x-4 items-center justify-center">
+          <div className="flex space-x-4 items-center justify-center mt-4">
             <Button
               onClick={() => setView("product")}
               variant="outline"
@@ -245,14 +246,13 @@ function PaymentLink({
                   d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <p>With Price</p>
+              <p>With Fixed Price</p>
             </Button>
           </div>
         </div>
       )}
       {project && !loding && view === "price" && (
-        <div className="grid gap-4 pb-4">
-          <div className="grid gap-4 pb-4">
+          <div className="flex flex-col">
             {!validPrice && (
               <>
                 <Input
@@ -278,13 +278,13 @@ function PaymentLink({
                   }}
                   className="mt-4 w-full flex space-x-2 items-center disabled:bg-zinc-900 disabled:text-neutral-500 text-white bg-zinc-900 hover:bg-zinc-800"
                 >
-                  Generate payment link
+                  Generate Payment Link
                 </Button>
               </>
             )}
             {validPrice && (
               <>
-                <div className="w-full h-64 flex items-center justify-center my-4">
+                <div className="w-full flex justify-center my-4">
                   <div className="relative flex items-center justify-center bg-zinc-900 rounded-xl p-4">
                     <QRCode
                       size={256}
@@ -303,77 +303,69 @@ function PaymentLink({
                   <p className="font-bold text-neutral-500 text-sm">Or</p>
                   <div className="w-full h-[1px] border-t border-zinc-700/50"></div>
                 </div>
-                <p className="font-bold">Share link below</p>
-                <div className="flex items-center justify-between border rounded border-zinc-700/50 w-full group cursor-pointer">
-                  <div className="flex items-center w-full truncate">
-                    <div className="bg-zinc-900 px-2 py-1 rounded flex space-x-2 items-center border-r border-zinc-700/50">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        className="w-3 h-3 text-green-500"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-
-                      <p className="text-neutral-500 text-sm">http://</p>
-                    </div>
-                    <p className="text-sm text-neutral-500 pl-1">
-                      {invoiceDomain.replace(/^\/\/|^.*?:(\/\/)?/, '')}
-                    </p>
-                    <p className="font-bold text-sm pl-1 truncate max-w-[160px]">
-                    ?paymentLink={paymentLink?.id}
-                    </p>
-                  </div>
-                </div>
-                <Button
+                <p className="font-bold mt-4">Share Payment Link</p>
+                <div className="flex flex-col space-y-2 mt-4">
+                  <Button
+                  variant="secondary"
                   onClick={() => {
-                    if ('clipboard' in navigator) {
-                      navigator.clipboard.writeText(`${invoiceDomain}?id=${paymentLink?.id}`)
-                      toast(
-                        <div className="flex space-x-3 items-center">
-                          <LinkIcon className="w-4 h-4" />
-                          <p>Link copied!</p>
-                        </div>
-                      )
-                    } else {
-                      return document.execCommand('copy', true, `${invoiceDomain}?id=${paymentLink?.id}`);
-                    }
-        
+                    if (navigator.share && navigator.canShare({url: ''})) {
+                      navigator.share({url: ''})
+                  } else {
+                      alert('Share links only over HTTPS!')
                   }
-                  }
-                  className="flex space-x-2 items-center pr-4 mt-2 hover:bg-zinc-800 bg-zinc-900 border-l border-zinc-700/50 px-2 py-1"
-                >
-                  {" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="text-green-400 w-4 h-4"
+                  }}
+                    className="flex space-x-2 items-center"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
-                    />
-                  </svg>
-                  <p className="text-green-400 font-bold text-sm">
-                    Copy paymentLink link
-                  </p>
-                </Button>
+                    <ExternalLink className="w-4 h-4 text-green-400" />
+                    <p className="text-green-400 font-bold text-sm">
+                      Share
+                    </p>
+                  </Button>
+                  <Button
+                  variant="outline"
+                    onClick={() => {
+                      if ('clipboard' in navigator) {
+                        navigator.clipboard.writeText(`${invoiceDomain}?id=${paymentLink?.id}`)
+                        toast(
+                          <div className="flex space-x-3 items-center">
+                            <LinkIcon className="w-4 h-4" />
+                            <p>Link copied!</p>
+                          </div>
+                        )
+                      } else {
+                        return document.execCommand('copy', true, `${invoiceDomain}?id=${paymentLink?.id}`);
+                      }
+          
+                    }
+                    }
+                    className="flex space-x-2 items-center"
+                  >
+                    {" "}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="text-green-400 w-4 h-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
+                      />
+                    </svg>
+                    <p className="text-green-400 font-bold text-sm">
+                      Copy link
+                    </p>
+                  </Button>
+                </div>
               </>
             )}
           </div>
-        </div>
       )}
       {project && view === "product" && (
-        <div className="grid gap-4 pb-4">
+        <div className="flex flex-col">
           {
             <Select
               disabled={loding}
@@ -418,7 +410,7 @@ function PaymentLink({
           }
           {!loding && selectedProduct && paymentLink && (
             <>
-              <p className="font-bold text-lg">Show QR to your client</p>
+              <p className="font-bold text-lg mt-4">Payment Link</p>
               <div className="w-full h-64 flex items-center justify-center my-4">
                 <div className="relative flex items-center justify-center bg-zinc-900 rounded-xl p-4">
                   <QRCode
@@ -442,76 +434,69 @@ function PaymentLink({
                 <p className="font-bold text-neutral-500 text-sm">Or</p>
                 <div className="w-full h-[1px] border-t border-zinc-700/50"></div>
               </div>
-              <p className="font-bold">Share link below</p>
-              <div className="flex items-center justify-between border rounded border-zinc-700/50 w-full group cursor-pointer">
-                <div className="flex items-center w-full truncate">
-                  <div className="bg-zinc-900 px-2 py-1 rounded flex space-x-2 items-center border-r border-zinc-700/50">
+              <p className="font-bold mt-4">Share Payment Link</p>
+                <div className="flex flex-col space-y-2 mt-4">
+                  <Button
+                  variant="secondary"
+                  onClick={() => {
+                    if (navigator.share && navigator.canShare({url: ''})) {
+                      navigator.share({url: ''})
+                  } else {
+                      alert('Share links only over HTTPS!')
+                  }
+                  }}
+                    className="flex space-x-2 items-center"
+                  >
+                    <ExternalLink className="w-4 h-4 text-green-400" />
+                    <p className="text-green-400 font-bold text-sm">
+                      Share
+                    </p>
+                  </Button>
+                  <Button
+                  variant="outline"
+                    onClick={() => {
+                      if ('clipboard' in navigator) {
+                        navigator.clipboard.writeText(`${invoiceDomain}?id=${paymentLink?.id}`)
+                        toast(
+                          <div className="flex space-x-3 items-center">
+                            <LinkIcon className="w-4 h-4" />
+                            <p>Link copied!</p>
+                          </div>
+                        )
+                      } else {
+                        return document.execCommand('copy', true, `${invoiceDomain}?id=${paymentLink?.id}`);
+                      }
+          
+                    }
+                    }
+                    className="flex space-x-2 items-center"
+                  >
+                    {" "}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      className="w-3 h-3 text-green-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="text-green-400 w-4 h-4"
                     >
                       <path
-                        fillRule="evenodd"
-                        d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z"
-                        clipRule="evenodd"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
                       />
                     </svg>
-
-                    <p className="text-neutral-500 text-sm">http://</p>
-                  </div>
-                  <p className="text-sm text-neutral-500 pl-1">
-                    {invoiceDomain.replace(/^\/\/|^.*?:(\/\/)?/, '')}
-                  </p>
-                  <p className="font-bold text-sm pl-1 max-w-[160px]">
-                  ?paymentLink={paymentLink.id}
-                  </p>
+                    <p className="text-green-400 font-bold text-sm">
+                      Copy link
+                    </p>
+                  </Button>
                 </div>
-              </div>
-              <Button
-                onClick={() => {
-                  if ('clipboard' in navigator) {
-                    navigator.clipboard.writeText(`${invoiceDomain}?id=${paymentLink?.id}`)
-                    toast(
-                      <div className="flex space-x-3 items-center">
-                        <LinkIcon className="w-4 h-4" />
-                        <p>Link copied!</p>
-                      </div>
-                    )
-                  } else {
-                    return document.execCommand('copy', true, `${invoiceDomain}?id=${paymentLink?.id}`);
-                  }
-                  
-                }
-                }
-                className="flex space-x-2 items-center pr-4 mt-2 hover:bg-zinc-800 bg-zinc-900 border-l border-zinc-700/50 px-2 py-1"
-              >
-                {" "}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="text-green-400 w-4 h-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
-                  />
-                </svg>
-                <p className="text-green-400 font-bold text-sm">
-                  Copy paymentLink link
-                </p>
-              </Button>
             </>
           )}
         </div>
       )}
       {project && !loding && view === "quick" && paymentLink !== null && (
-        <div className="grid gap-3 pb-4">
+        <div className="flex flex-col">
           <div className="w-full h-64 flex items-center justify-center my-4">
             <div className="flex items-center justify-center bg-zinc-900 rounded-xl p-4">
               <QRCode
@@ -529,67 +514,63 @@ function PaymentLink({
             <p className="font-bold text-neutral-500 text-sm">Or</p>
             <div className="w-full h-[1px] border-t border-zinc-700/50"></div>
           </div>
-          <p className="font-bold">Share link below</p>
-          <div className="flex items-center justify-between border rounded border-zinc-700/50 w-full group cursor-pointer">
-            <div className="flex items-center w-full truncate">
-              <div className="bg-zinc-900 px-2 py-1 rounded flex space-x-2 items-center border-r border-zinc-700/50">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="w-3 h-3 text-green-500"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-
-                <p className="text-neutral-500 text-sm">https://</p>
-              </div>
-              <p className="text-sm text-neutral-500 pl-1">{invoiceDomain.replace(/^\/\/|^.*?:(\/\/)?/, '')}</p>
-              <p className="font-bold text-sm pl-1 max-w-[160px]">
-                ?paymentLink={paymentLink.id}
-              </p>
-            </div>
-          </div>
-          <Button
-            onClick={() => {
-              if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(`${invoiceDomain}?id=${paymentLink?.id}`)
-                toast(
-                  <div className="flex space-x-3 items-center">
-                    <LinkIcon className="w-4 h-4" />
-                    <p>Link copied!</p>
-                  </div>
-                )
-              } else {
-                return document.execCommand('copy', true, `${invoiceDomain}?id=${paymentLink?.id}`);
-              }
-            }
-            }
-            className="flex space-x-2 items-center pr-4 mt-2 hover:bg-zinc-800 bg-zinc-900 border-l border-zinc-700/50 px-2 py-1"
-          >
-            {" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="text-green-400 w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
-              />
-            </svg>
-            <p className="text-green-400 font-bold text-sm">
-              Copy paymentLink link
-            </p>
-          </Button>
+          <p className="font-bold mt-4">Share Payment Link</p>
+                <div className="flex flex-col space-y-2 mt-4">
+                  <Button
+                  variant="secondary"
+                  onClick={() => {
+                    if (navigator.share && navigator.canShare({url: ''})) {
+                      navigator.share({url: ''})
+                  } else {
+                      alert('Share links only over HTTPS!')
+                  }
+                  }}
+                    className="flex space-x-2 items-center"
+                  >
+                    <ExternalLink className="w-4 h-4 text-green-400" />
+                    <p className="text-green-400 font-bold text-sm">
+                      Share
+                    </p>
+                  </Button>
+                  <Button
+                  variant="outline"
+                    onClick={() => {
+                      if ('clipboard' in navigator) {
+                        navigator.clipboard.writeText(`${invoiceDomain}?id=${paymentLink?.id}`)
+                        toast(
+                          <div className="flex space-x-3 items-center">
+                            <LinkIcon className="w-4 h-4" />
+                            <p>Link copied!</p>
+                          </div>
+                        )
+                      } else {
+                        return document.execCommand('copy', true, `${invoiceDomain}?id=${paymentLink?.id}`);
+                      }
+          
+                    }
+                    }
+                    className="flex space-x-2 items-center"
+                  >
+                    {" "}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="text-green-400 w-4 h-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
+                      />
+                    </svg>
+                    <p className="text-green-400 font-bold text-sm">
+                      Copy link
+                    </p>
+                  </Button>
+                </div>
         </div>
       )}
     </>
@@ -641,11 +622,11 @@ export function AddPaymentLink() {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>
-              {view === "type" && "Create new paymentLink"}
+              {view === "type" && "Create new Payment Link"}
               {view === "quick" && "Show QR below"}
-              {view === "product" && "Choose product for paymentLink"}
-              {view === "price" && !validPrice && "Select price for paymentLink"}
-              {view === "price" && validPrice && `Show QR to your client`}
+              {view === "product" && "Choose product"}
+              {view === "price" && !validPrice && "Select Price"}
+              {view === "price" && validPrice && `Payment Link`}
             </DialogTitle>
             <DialogDescription>
               {}
@@ -653,7 +634,7 @@ export function AddPaymentLink() {
                 "Your client will be redirected to payment page"}
               {view === "price" &&
                 validPrice &&
-                `paymentLink for ${selectedPrice} USD`}
+                `Fixed ${selectedPrice} USD invoice`}
             </DialogDescription>
           </DialogHeader>
           <PaymentLink
@@ -704,11 +685,11 @@ export function AddPaymentLink() {
           <DrawerHeader>
             <DrawerTitle>
               {" "}
-              {view === "type" && "Create new paymentLink"}
+              {view === "type" && "Create new Payment Link"}
               {view === "quick" && "Show QR below"}
-              {view === "product" && "Choose product for paymentLink"}
-              {view === "price" && !validPrice && "Select price for paymentLink"}
-              {view === "price" && validPrice && `Show QR to your client`}
+              {view === "product" && "Choose product"}
+              {view === "price" && !validPrice && "Select Pice"}
+              {view === "price" && validPrice && `Payment Link`}
             </DrawerTitle>
             <DrawerDescription>
               {" "}
@@ -716,7 +697,7 @@ export function AddPaymentLink() {
                 "Your client will be redirected to payment page"}
               {view === "price" &&
                 validPrice &&
-                `paymentLink for ${selectedPrice} USD`}
+                `Fixed ${selectedPrice} USD invoice`}
             </DrawerDescription>
           </DrawerHeader>
           <div className="p-4">

@@ -132,16 +132,6 @@ export default function Settings() {
                       </p>
                       <h2 className="text-2xl font-bold">{project.title}</h2>
                     </div>
-
-                    {project.slug && <div className="flex flex-col">
-                      <p className="font-bold text-neutral-500 text-sm">
-                        Store URL:
-                      </p>
-                      <div className="flex items-center space-x-2 group cursor-pointer text-green-500">
-                        <Link href={`https://${project.slug}.${CLIENT_URL}`} className="underline group-hover:text-green-400">{`https://${project.slug}.${CLIENT_URL}`}</Link>
-                        <ExternalLinkIcon className="w-4 h-4 group-hover:text-green-400" />
-                      </div>
-                    </div>}
           
                     <div className="flex flex-col">
                       <p className="font-bold text-neutral-500 text-sm">

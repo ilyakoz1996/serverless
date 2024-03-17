@@ -19,32 +19,11 @@ import { useForm } from "react-hook-form";
 import { CLIENT_URL } from "@/core/constants";
 
 
-const websiteUrlValidator = z.string().nullable().refine((value) => {
-
-  if (value === null || value.length <= 0) {
-    return true
-  }
-
-  const isHttp = value.startsWith("http://");
-  const isHttps = value.startsWith("https://");
-
-  if (!(isHttp || isHttps)) {
-    return false;
-  }
-
-  const domainZone = ".com";
-  return value.endsWith(domainZone);
-}, {
-  message: "Invalid website URL",
-})
-
 const schema = z.object({
   slug: z.string().min(3, "Subdomain should have at least 3 symbols length").max(12, "Subdomain should be maximum 12 symbols length"),
   title: z.string().min(3, "Title should have at least 3 symbols length").max(12, "Title should be maximum 12 symbols length"),
   img: z.string().default("https://static.vecteezy.com/system/resources/previews/000/554/511/original/shopping-cart-vector-icon.jpg"),
   about: z.string().max(256, "Description must contain at most 256 character(s)").optional(),
-  websiteUrl: websiteUrlValidator,
-  mnemonic: z.string().optional()
 });
 
 export default function CreateStore({setShowNewTeamDialog}:{setShowNewTeamDialog?: any}) {
@@ -171,7 +150,7 @@ export default function CreateStore({setShowNewTeamDialog}:{setShowNewTeamDialog
                   errors.slug?.message ? "border-b-2 border-red-500" : "border-green-400"
                 }`}
               />
-              <p className="font-bold text-sm pl-1 pr-4">.{CLIENT_URL}</p>
+              <p className="font-bold text-sm pl-1 pr-4 min-w-max">.your-domain.com</p>
             </div>
           </div>
           <DisplayError error={errors.slug} />
@@ -242,44 +221,6 @@ export default function CreateStore({setShowNewTeamDialog}:{setShowNewTeamDialog
             <p className={`absolute -bottom-5 right-0 text-xs ${watch('about')?.length! > 256 ? "text-red-500" : "text-neutral-500"}`}>{watch('about')?.length ? watch('about').length : 0}/256</p>
           </div>
           <DisplayError error={errors.about} />
-        </div>
-        {/* WEBSITE URL */}
-        <div className="flex flex-col items-start mt-6">
-          <Label 
-          htmlFor="websiteUrl" 
-          error={errors.websiteUrl} 
-          className="text-right mb-3 optional">
-            Website
-          </Label>
-          <div className="flex space-x-4 items-center w-full">
-            <Input
-              id="websiteUrl"
-              placeholder="https://example.com"
-              {...register("websiteUrl")}
-              className="w-full"
-              error={errors.websiteUrl}
-            />
-          </div>
-          <DisplayError error={errors.websiteUrl} />
-        </div>
-        {/* WALLET MNEMONIC */}
-        <div className="flex flex-col items-start mt-6">
-          <Label 
-          htmlFor="mnemonic" 
-          error={errors.mnemonic} 
-          className="text-right mb-3 optional">
-            Import Wallet
-          </Label>
-          <div className="flex space-x-4 items-center w-full">
-            <Textarea
-              id="mnemonic"
-              placeholder="12 or 24 HD wallet mnemonic phrase. If you dont have one, we will create new wallet for you."
-              {...register("mnemonic")}
-              className="w-full"
-              error={errors.mnemonic}
-            />
-          </div>
-          <DisplayError error={errors.mnemonic} />
         </div>
         {/* CONFIRM BUTTON */}
         <Button disabled={ValidateFormFields({

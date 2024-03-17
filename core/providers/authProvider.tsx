@@ -2,7 +2,7 @@
 import API from "@/core/api";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { AUTH_CLIENT_URL, AUTH_SERVER_URL, CLIENT_URL, ROOT_DOMAIN } from "../constants";
+import { AUTH_CLIENT_URL, AUTH_SERVER_URL, CLIENT_URL, ROOT_DOMAIN, SERVER_URL } from "../constants";
 
 const AuthContext = createContext<any>(null);
 
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState(localUser ? JSON.parse(localUser) : null);
 
   const login = (): void => {
-    const oauthServerUrl = `https://${ROOT_DOMAIN}/api/auth?login=true`;
+    const oauthServerUrl = `${CLIENT_URL}/api/auth?login=true`;
     const width = 400, height = 420;
     const left = (window.innerWidth - width) / 2;
     const top = (window.innerHeight - height) / 2;

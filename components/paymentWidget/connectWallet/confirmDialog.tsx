@@ -16,7 +16,7 @@ function ConfirmContent ({setShowConfirm, phone} : {setShowConfirm: React.Dispat
     const api = new API()
     const db3 = new Db3()
 
-    const {product, paymentLink, setPaymentLink, token, price, email, wallet, setStep} = useWidgetContext()
+    const {product, paymentLink, setPaymentLink, setInvoice, token, price, email, wallet, setStep} = useWidgetContext()
 
     const [loading, setLoading] = useState(false)
 
@@ -42,9 +42,6 @@ function ConfirmContent ({setShowConfirm, phone} : {setShowConfirm: React.Dispat
             price: getPrice().toFixed(2)
         })
         if (invoice) {
-            nprogress.done()
-            setLoading(false)
-            setStep('payment')
             const invoiceId = invoice.invoiceId
             const updatedPaymentLink = await api.paymentLinks.updatePaymentLink({
                 id: paymentLink.data.id,
@@ -52,8 +49,13 @@ function ConfirmContent ({setShowConfirm, phone} : {setShowConfirm: React.Dispat
                 price: Number(getPrice().toFixed(2))
             })
             setPaymentLink((prev: any) => {
+                console.log('INVOICE UPDATED AS: ', {...prev, data: {...prev.data, invoiceId: updatedPaymentLink.invoiceId}})
                 return {...prev, data: {...prev.data, invoiceId: updatedPaymentLink.invoiceId}}
             })
+            setInvoice(invoice)
+            setLoading(false)
+            nprogress.done()
+            setStep('payment')
         }
     }
 
