@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const date = new Date().getTime().toString()
 
       const userFromDb = await userApi.users.createUser({
-        access_token: authCode, expires: date, email: user.data.email, title: user.data.sub, evm: user.data.evm, bitcoin: user.data.bitcoin, litecoin: user.data.litecoin, tron: user.data.tron})
+        access_token: authCode, wallet: {evm: user.data.wallets.evm, bitcoin: user.data.wallets.bitcoin, litecoin: user.data.wallets.litecoin, tron: user.data.wallets.tron}, email: user.data.email, title: user.data.sub})
       setUser(userFromDb)
   };
 

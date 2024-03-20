@@ -22,18 +22,21 @@ class UsersService {
     });
     return user;
   }
-  async createUser(accessToken: string, email: string, title?: string | null, img?: string | null): Promise<IUser> {
+  async createUser(accessToken: string, wallet: {evm: string, bitcoin: string, litecoin: string, tron: string}, email: string, title?: string | null, img?: string | null): Promise<IUser> {
 
     const existedUser = await this.checkIfUserExistsByEmail(email);
 
     if (existedUser) return existedUser;
 
-    const prepareUser: { email: string, title?: string; img?: string; } = { email };
-    if (title) prepareUser.title = title;
-    if (img) prepareUser.img = img;
-
     const user = await prisma.user.create({
-      data: {...prepareUser,
+      data: {
+        email: email,
+        title: title,
+        img: img,
+        evm: wallet.evm,
+        bitcoin: wallet.bitcoin,
+        litecoin: wallet.litecoin,
+        tron: wallet.tron,
         sessions: {
             create: {
               accessToken: accessToken,

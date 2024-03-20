@@ -3,7 +3,6 @@
 import * as React from "react";
 import {
   CaretSortIcon,
-  CheckIcon,
   PlusCircledIcon,
 } from "@radix-ui/react-icons";
 
@@ -23,30 +22,16 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { IUser } from "@/core/types";
-import users from "@/core/api/users";
-import CreateProject from "@/app/(dashboard)/create-project/page";
 import CreateStore from "@/components/forms/addProject";
-import TooltipInfo from "@/components/ui/tip";
 import { StoreIcon } from "lucide-react";
 import LStorage from "@/core/localStorage";
 import { useQueryClient } from "@tanstack/react-query";

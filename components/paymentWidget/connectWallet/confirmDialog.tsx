@@ -33,6 +33,14 @@ function ConfirmContent ({setShowConfirm, phone} : {setShowConfirm: React.Dispat
     const onSubmit = async () => {
         nprogress.start()
         setLoading(true)
+        console.log({
+            projectId: paymentLink.data.projectId, 
+            productId: paymentLink.data.productId ? paymentLink.data.productId : undefined, 
+            tokenId: Number(token.id), 
+            from: wallet,
+            clientEmail: email,
+            price: getPrice().toFixed(2)
+        })
         const invoice = await api.processing.createInvoice({
             projectId: paymentLink.data.projectId, 
             productId: paymentLink.data.productId ? paymentLink.data.productId : undefined, 
@@ -41,6 +49,7 @@ function ConfirmContent ({setShowConfirm, phone} : {setShowConfirm: React.Dispat
             clientEmail: email,
             price: getPrice().toFixed(2)
         })
+        
         if (invoice) {
             const invoiceId = invoice.invoiceId
             const updatedPaymentLink = await api.paymentLinks.updatePaymentLink({

@@ -16,7 +16,6 @@ import nprogress from "@/lib/nprogress";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { CLIENT_URL } from "@/core/constants";
 
 
 const schema = z.object({

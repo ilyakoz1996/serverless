@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
     const body = await req.json()
-    const user = await usersService.createUser(body.access_token, body.email, body.title, body.img);
+    const user = await usersService.createUser(body.access_token, body.wallet, body.email, body.title, body.img,);
     return NextResponse.json(user)
 }
 export async function PUT(req: NextRequest) {
